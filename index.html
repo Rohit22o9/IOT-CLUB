@@ -15,7 +15,7 @@
     href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=20261015_03">
 </head>
 
 <body>
@@ -800,13 +800,13 @@
         <div class="achieve-video-column">
           <div class="video-player-card">
             <div class="video-frame-container">
-              <video id="achieve-video" src="achievements.mp4" preload="auto" playsinline webkit-playsinline>
+              <video id="achieve-video" src="achievements.mp4" preload="auto" playsinline webkit-playsinline onclick="if(window.toggleAchievementVideo) window.toggleAchievementVideo(event);">
                 <source src="achievements.mp4" type="video/mp4">
                 <source src="achievementS (1).mp4" type="video/mp4">
               </video>
 
               <!-- Center Play/Pause Overlay Button -->
-              <button class="video-play-overlay-btn" id="video-play-toggle" aria-label="Play Video">
+              <button class="video-play-overlay-btn" id="video-play-toggle" aria-label="Play Video" onclick="if(window.toggleAchievementVideo) window.toggleAchievementVideo(event);">
                 <svg class="play-icon-svg" width="34" height="34" viewBox="0 0 24 24" fill="currentColor">
                   <polygon points="5 3 19 12 5 21 5 3"></polygon>
                 </svg>
@@ -819,7 +819,16 @@
 
               <!-- Video Custom Controls Bar -->
               <div class="video-controls-bottom">
-                <span class="video-time-display" id="video-time">0:00 / 2:15</span>
+                <button class="video-bottom-play-btn" id="video-bottom-play-toggle" aria-label="Play or Pause" onclick="if(window.toggleAchievementVideo) window.toggleAchievementVideo(event);">
+                  <svg class="play-icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                  <svg class="pause-icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                    <rect x="6" y="4" width="4" height="16"></rect>
+                    <rect x="14" y="4" width="4" height="16"></rect>
+                  </svg>
+                </button>
+                <span class="video-time-display" id="video-time">0:00 / 4:06</span>
                 <div class="video-progress-track" id="video-seek-track">
                   <div class="video-progress-fill" id="video-progress-bar"></div>
                 </div>
@@ -1431,7 +1440,7 @@
   <!-- Scroll Track providing the 650vh scroll timeline -->
   <div id="scroll-track"></div>
 
-  <script src="script.js?v=20261015_02"></script>
+  <script src="script.js?v=20261015_03"></script>
 </body>
 
 </html>

@@ -1673,6 +1673,7 @@ html, body {
   position: relative;
 }
 
+.video-bottom-play-btn,
 .video-mute-btn,
 .video-fs-btn {
   background: none;
@@ -1683,12 +1684,14 @@ html, body {
   align-items: center;
   justify-content: center;
   padding: 2px;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, transform 0.15s ease;
 }
 
+.video-bottom-play-btn:hover,
 .video-mute-btn:hover,
 .video-fs-btn:hover {
   color: #00d2ff;
+  transform: scale(1.1);
 }
 
 .video-info-footer {

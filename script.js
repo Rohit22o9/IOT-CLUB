@@ -758,26 +758,27 @@
       return `${m}:${s < 10 ? '0' : ''}${s}`;
     }
 
+    const bottomPlayBtn = document.getElementById('video-bottom-play-toggle');
+
     function updatePlayState(isPlaying) {
-      if (playSvg && pauseSvg) {
-        playSvg.style.display = isPlaying ? 'none' : 'block';
-        pauseSvg.style.display = isPlaying ? 'block' : 'none';
-      }
+      const allPlaySvgs = document.querySelectorAll('.play-icon-svg');
+      const allPauseSvgs = document.querySelectorAll('.pause-icon-svg');
+      allPlaySvgs.forEach(s => s.style.display = isPlaying ? 'none' : 'block');
+      allPauseSvgs.forEach(s => s.style.display = isPlaying ? 'block' : 'none');
+
       if (playBtn) {
         playBtn.style.opacity = isPlaying ? '0' : '1';
+        playBtn.style.pointerEvents = isPlaying ? 'none' : 'auto';
       }
     }
 
     function togglePlay(e) {
       if (e) {
+        if (typeof e.preventDefault === 'function') e.preventDefault();
         if (typeof e.stopPropagation === 'function') e.stopPropagation();
       }
 
       if (video.paused || video.ended) {
-        if (!video.currentSrc && !video.src) {
-          video.src = 'achievements.mp4';
-          video.load();
-        }
         const promise = video.play();
         if (promise !== undefined) {
           promise
@@ -801,13 +802,21 @@
       }
     }
 
+    window.toggleAchievementVideo = togglePlay;
+
     // Attach click listeners to all intuitive trigger elements
     if (playBtn) {
       playBtn.addEventListener('click', togglePlay);
     }
+    if (bottomPlayBtn) {
+      bottomPlayBtn.addEventListener('click', togglePlay);
+    }
     video.addEventListener('click', togglePlay);
     if (container) {
-      container.addEventListener('click', togglePlay);
+      container.addEventListener('click', (e) => {
+        if (e.target.closest('.video-controls-bottom')) return;
+        togglePlay(e);
+      });
     }
     if (infoLeft) {
       infoLeft.addEventListener('click', togglePlay);
