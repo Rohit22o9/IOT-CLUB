@@ -201,6 +201,7 @@ html, body {
 
 .screen-one-overlay.active {
   pointer-events: auto;
+  visibility: visible !important;
 }
 
 .bg-waves-left, .bg-waves-right {
@@ -831,6 +832,7 @@ html, body {
 
 .screen-two-overlay.active {
   pointer-events: auto;
+  visibility: visible !important;
 }
 
 /* Strictly ensure that when an overlay is inactive, NO child elements intercept pointer events */
@@ -1302,6 +1304,7 @@ html, body {
 
 .screen-three-overlay.active {
   pointer-events: auto;
+  visibility: visible !important;
 }
 
 /* Ambient Readability Scrim (Disabled to remove white background) */
@@ -1853,6 +1856,7 @@ html, body {
 .screen-four-overlay.active {
   opacity: 1;
   pointer-events: auto;
+  visibility: visible !important;
 }
 
 .screen4-scrim {

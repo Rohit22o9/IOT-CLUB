@@ -51,7 +51,7 @@
   let dpr = 1;
 
   // Frame URL Resolver with Cache-Buster
-  const FRAME_VERSION = 'v=20261015_05';
+  const FRAME_VERSION = 'v=20261015_06';
   function getFrameUrl(index) {
     const frameNumber = index + 1;
     const pad = String(frameNumber).padStart(5, '0');
@@ -946,6 +946,7 @@
     initAchievementsCarousel();
     initAchievementsVideo();
     updateScroll();
+    updateOverlays(currentFrame);
     loop();
     handleHashNavigation();
   }
