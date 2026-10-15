@@ -50,11 +50,12 @@
   let lastDrawnIndex = -1;
   let dpr = 1;
 
-  // Frame URL Resolver: 0 -> "/IOT_club frames/00001.jpg"
+  // Frame URL Resolver with Cache-Buster
+  const FRAME_VERSION = 'v=20261015_05';
   function getFrameUrl(index) {
     const frameNumber = index + 1;
     const pad = String(frameNumber).padStart(5, '0');
-    return `${FRAME_DIRECTORY}/${pad}.jpg`;
+    return `${FRAME_DIRECTORY}/${pad}.jpg?${FRAME_VERSION}`;
   }
 
   // --- 1. Canvas Resizer (Retina High-DPI) ---
@@ -217,10 +218,15 @@
 
         screenOneOverlay.style.opacity = opacity;
         screenOneOverlay.style.transform = `translateY(${translateY}px)`;
-        screenOneOverlay.style.pointerEvents = fadeRatio >= 0.9 ? 'none' : 'auto';
+        const isOneActive = fadeRatio < 0.85;
+        screenOneOverlay.style.pointerEvents = isOneActive ? 'auto' : 'none';
+        screenOneOverlay.style.visibility = isOneActive ? 'visible' : 'hidden';
+        screenOneOverlay.classList.toggle('active', isOneActive);
       } else {
         screenOneOverlay.style.opacity = '0';
         screenOneOverlay.style.pointerEvents = 'none';
+        screenOneOverlay.style.visibility = 'hidden';
+        screenOneOverlay.classList.remove('active');
       }
     }
 
@@ -248,11 +254,14 @@
 
         screenTwoOverlay.style.opacity = opacity.toFixed(3);
         screenTwoOverlay.style.transform = `translateY(${translateY.toFixed(1)}px)`;
-        screenTwoOverlay.style.pointerEvents = opacity > 0.3 ? 'auto' : 'none';
-        screenTwoOverlay.classList.toggle('active', opacity > 0.3);
+        const isTwoActive = opacity > 0.2;
+        screenTwoOverlay.style.pointerEvents = isTwoActive ? 'auto' : 'none';
+        screenTwoOverlay.style.visibility = isTwoActive ? 'visible' : 'hidden';
+        screenTwoOverlay.classList.toggle('active', isTwoActive);
       } else {
         screenTwoOverlay.style.opacity = '0';
         screenTwoOverlay.style.pointerEvents = 'none';
+        screenTwoOverlay.style.visibility = 'hidden';
         screenTwoOverlay.classList.remove('active');
       }
     }
@@ -278,11 +287,14 @@
 
         screenThreeOverlay.style.opacity = opacity.toFixed(3);
         screenThreeOverlay.style.transform = `translateY(${translateY.toFixed(1)}px)`;
-        screenThreeOverlay.style.pointerEvents = opacity > 0.3 ? 'auto' : 'none';
-        screenThreeOverlay.classList.toggle('active', opacity > 0.3);
+        const isThreeActive = opacity > 0.2;
+        screenThreeOverlay.style.pointerEvents = isThreeActive ? 'auto' : 'none';
+        screenThreeOverlay.style.visibility = isThreeActive ? 'visible' : 'hidden';
+        screenThreeOverlay.classList.toggle('active', isThreeActive);
       } else {
         screenThreeOverlay.style.opacity = '0';
         screenThreeOverlay.style.pointerEvents = 'none';
+        screenThreeOverlay.style.visibility = 'hidden';
         screenThreeOverlay.classList.remove('active');
       }
     }
@@ -303,15 +315,14 @@
 
         screenFourOverlay.style.opacity = opacity.toFixed(3);
         screenFourOverlay.style.transform = `translateY(${translateY.toFixed(1)}px)`;
-        screenFourOverlay.style.pointerEvents = opacity > 0.4 ? 'auto' : 'none';
-        if (opacity > 0.4) {
-          screenFourOverlay.classList.add('active');
-        } else {
-          screenFourOverlay.classList.remove('active');
-        }
+        const isFourActive = opacity > 0.25;
+        screenFourOverlay.style.pointerEvents = isFourActive ? 'auto' : 'none';
+        screenFourOverlay.style.visibility = isFourActive ? 'visible' : 'hidden';
+        screenFourOverlay.classList.toggle('active', isFourActive);
       } else {
         screenFourOverlay.style.opacity = '0';
         screenFourOverlay.style.pointerEvents = 'none';
+        screenFourOverlay.style.visibility = 'hidden';
         screenFourOverlay.classList.remove('active');
       }
     }
@@ -772,11 +783,22 @@
       }
     }
 
+    // Keep UI state synchronized with native media events
+    video.addEventListener('play', () => updatePlayState(true));
+    video.addEventListener('playing', () => updatePlayState(true));
+    video.addEventListener('pause', () => updatePlayState(false));
+    video.addEventListener('ended', () => updatePlayState(false));
+
+    let lastToggleTime = 0;
     function togglePlay(e) {
       if (e) {
         if (typeof e.preventDefault === 'function') e.preventDefault();
         if (typeof e.stopPropagation === 'function') e.stopPropagation();
       }
+
+      const now = Date.now();
+      if (now - lastToggleTime < 300) return;
+      lastToggleTime = now;
 
       if (video.paused || video.ended) {
         const promise = video.play();
@@ -812,12 +834,6 @@
       bottomPlayBtn.addEventListener('click', togglePlay);
     }
     video.addEventListener('click', togglePlay);
-    if (container) {
-      container.addEventListener('click', (e) => {
-        if (e.target.closest('.video-controls-bottom')) return;
-        togglePlay(e);
-      });
-    }
     if (infoLeft) {
       infoLeft.addEventListener('click', togglePlay);
     }
@@ -901,10 +917,27 @@
     }
   }
 
+  // Handle URL hash navigation on initial load and hashchange
+  function handleHashNavigation() {
+    const hash = (window.location.hash || '').toLowerCase();
+    if (hash === '#achievements') {
+      setTimeout(() => { if (window.goToAchievements) window.goToAchievements(); }, 150);
+    } else if (hash === '#about') {
+      setTimeout(() => { if (window.goToAbout) window.goToAbout(); }, 150);
+    } else if (hash === '#members') {
+      setTimeout(() => { if (window.goToMembers) window.goToMembers(); }, 150);
+    } else if (hash === '#contact') {
+      setTimeout(() => { if (window.goToContact) window.goToContact(); }, 150);
+    } else if (hash === '#home') {
+      setTimeout(() => { if (window.goToHome) window.goToHome(); }, 150);
+    }
+  }
+
   // --- 12. Initialization ---
   function init() {
     window.addEventListener('resize', resizeCanvas, { passive: true });
     window.addEventListener('scroll', updateScroll, { passive: true });
+    window.addEventListener('hashchange', handleHashNavigation, { passive: true });
 
     resizeCanvas();
     startBackgroundLoader();
@@ -914,6 +947,7 @@
     initAchievementsVideo();
     updateScroll();
     loop();
+    handleHashNavigation();
   }
 
   if (document.readyState === 'loading') {

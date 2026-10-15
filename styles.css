@@ -190,13 +190,17 @@ html, body {
 .screen-one-overlay {
   position: fixed;
   inset: 0;
-  z-index: 25;
-  pointer-events: auto;
+  z-index: 15;
+  pointer-events: none;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   transition: opacity 0.25s ease-out, transform 0.25s ease-out;
   will-change: opacity, transform;
+}
+
+.screen-one-overlay.active {
+  pointer-events: auto;
 }
 
 .bg-waves-left, .bg-waves-right {
@@ -830,6 +834,8 @@ html, body {
 }
 
 /* Strictly ensure that when an overlay is inactive, NO child elements intercept pointer events */
+.screen-one-overlay:not(.active),
+.screen-one-overlay:not(.active) *,
 .screen-two-overlay:not(.active),
 .screen-two-overlay:not(.active) *,
 .screen-three-overlay:not(.active),
@@ -837,6 +843,13 @@ html, body {
 .screen-four-overlay:not(.active),
 .screen-four-overlay:not(.active) * {
   pointer-events: none !important;
+}
+
+.screen-one-overlay:not(.active),
+.screen-two-overlay:not(.active),
+.screen-three-overlay:not(.active),
+.screen-four-overlay:not(.active) {
+  visibility: hidden !important;
 }
 
 /* Directional Scrim for Ambient Contrast */
@@ -1273,7 +1286,7 @@ html, body {
 .screen-three-overlay {
   position: fixed;
   inset: 0;
-  z-index: 10;
+  z-index: 35;
   pointer-events: none;
   overflow: hidden;
   display: flex;
