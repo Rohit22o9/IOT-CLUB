@@ -1,0 +1,23 @@
+{
+  "name": "iot-innovation-club",
+  "version": "1.0.0",
+  "description": "Ultra-premium, cinematic, interactive website for the IoT Innovation Club (JSPM's JSCOE) featuring an 800-frame scroll-driven canvas walkthrough.",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "iot",
+    "canvas-sequence",
+    "embedded-systems",
+    "edge-ai",
+    "robotics",
+    "interactive-web",
+    "awwwards",
+    "apple-design"
+  ],
+  "author": "IoT Innovation Club",
+  "license": "ISC"
+}

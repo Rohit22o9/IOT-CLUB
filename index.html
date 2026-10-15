@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <title>JSPM's JSCOE IoT Club</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans, Outfit & Caveat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- Top Minimal Scroll Progress Line -->
+  <div id="scroll-progress-line" aria-hidden="true"></div>
+
+  <!-- Permanently Fixed Canvas Viewport (800-frame sequence) -->
+  <div class="canvas-fixed-container">
+    <canvas id="canvas-renderer"></canvas>
+  </div>
+
+  <!-- PERSISTENT TOP FLOATING NAVBAR -->
+  <header class="exact-navbar" id="main-navbar">
+    <!-- Left: Logo & Brand -->
+    <a href="#home" class="navbar-brand">
+      <div class="bulb-logo-icon">
+        <svg width="34" height="34" viewBox="0 0 100 100" fill="none">
+          <path d="M50 8 L50 2" stroke="#ffb703" stroke-width="4" stroke-linecap="round" />
+          <path d="M24 18 L19 13" stroke="#ffb703" stroke-width="4" stroke-linecap="round" />
+          <path d="M76 18 L81 13" stroke="#ffb703" stroke-width="4" stroke-linecap="round" />
+          <path d="M14 42 L8 42" stroke="#ffb703" stroke-width="4" stroke-linecap="round" />
+          <path d="M86 42 L92 42" stroke="#ffb703" stroke-width="4" stroke-linecap="round" />
+          <path d="M28 42 C28 28, 38 18, 50 18 C62 18, 72 28, 72 42 C72 52, 65 58, 62 66 L38 66 C35 58, 28 52, 28 42 Z"
+            stroke="#0072f5" stroke-width="4.5" fill="#ffffff" />
+          <rect x="35" y="32" width="30" height="4" rx="2" fill="#ff9933" />
+          <rect x="33" y="38" width="34" height="4" rx="2" fill="#0072f5" />
+          <rect x="35" y="44" width="30" height="4" rx="2" fill="#138808" />
+          <path d="M50 24 L58 30 L55 36" stroke="#ffb703" stroke-width="3.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+          <circle cx="58" cy="30" r="2.5" fill="#0072f5" />
+          <path d="M36 66 L64 66 L60 76 L40 76 Z" fill="#0072f5" />
+          <path d="M42 76 L58 76 L55 82 L45 82 Z" fill="#0056b3" />
+        </svg>
+      </div>
+      <div class="brand-headings">
+        <span class="brand-top">JSPM's</span>
+        <span class="brand-title">JSCOE <span class="brand-highlight">IoT Club</span></span>
+      </div>
+    </a>
+
+    <!-- Center: Navigation Links -->
+    <nav class="navbar-links" aria-label="Main Navigation">
+      <a href="#home" id="nav-link-home" class="nav-item active">Home</a>
+      <a href="#about" id="nav-link-about" class="nav-item">About</a>
+      <a href="#achievements" id="nav-link-achievements" class="nav-item">Achievements</a>
+      <a href="#members" id="nav-link-members" class="nav-item">Members</a>
+      <a href="#contact" id="nav-link-contact" class="nav-item">Contact</a>
+    </nav>
+
+    <!-- Right: Admin Login Pill -->
+    <div class="navbar-actions">
+      <a href="#admin" class="btn-admin-login">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+        </svg>
+        <span>Admin Login</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       FIRST SCREEN UI OVERLAY (Frame 0 - Entrance Doorway)
+       ======================================================================== -->
+  <div id="screen-one-overlay" class="screen-one-overlay">
+
+    <!-- Ambient Concentric Wave Lines (Background Decoration) -->
+    <svg class="bg-waves-left" viewBox="0 0 400 400" fill="none" aria-hidden="true">
+      <circle cx="0" cy="200" r="100" stroke="#0072f5" stroke-opacity="0.14" stroke-width="1.5" />
+      <circle cx="0" cy="200" r="160" stroke="#0072f5" stroke-opacity="0.09" stroke-width="1.5" />
+      <circle cx="0" cy="200" r="230" stroke="#0072f5" stroke-opacity="0.06" stroke-width="1.5" />
+      <circle cx="0" cy="200" r="310" stroke="#0072f5" stroke-opacity="0.04" stroke-width="1.5" />
+    </svg>
+    <svg class="bg-waves-right" viewBox="0 0 400 400" fill="none" aria-hidden="true">
+      <circle cx="400" cy="200" r="100" stroke="#0072f5" stroke-opacity="0.14" stroke-width="1.5" />
+      <circle cx="400" cy="200" r="160" stroke="#0072f5" stroke-opacity="0.09" stroke-width="1.5" />
+      <circle cx="400" cy="200" r="230" stroke="#0072f5" stroke-opacity="0.06" stroke-width="1.5" />
+      <circle cx="400" cy="200" r="310" stroke="#0072f5" stroke-opacity="0.04" stroke-width="1.5" />
+    </svg>
+
+    <!-- Neon Sign Ambient Glow Pulse on Right Wall -->
+    <div class="neon-bulb-glow" aria-hidden="true"></div>
+
+    <!-- Corner Plant Leaves (Lush Depth of Field) -->
+    <div class="corner-plant plant-left" aria-hidden="true">
+      <svg width="180" height="220" viewBox="0 0 180 220" fill="none">
+        <path d="M-20 240 C10 170, 70 140, 90 90 C70 130, 20 180, -20 240 Z" fill="#2d6a4f" opacity="0.85" />
+        <path d="M-10 240 C30 160, 110 130, 140 60 C110 110, 40 170, -10 240 Z" fill="#40916c" opacity="0.9" />
+        <path d="M0 240 C50 180, 120 160, 160 110 C120 150, 50 190, 0 240 Z" fill="#52b788" opacity="0.75" />
+      </svg>
+    </div>
+    <div class="corner-plant plant-right" aria-hidden="true">
+      <svg width="180" height="220" viewBox="0 0 180 220" fill="none">
+        <path d="M200 240 C170 170, 110 140, 90 90 C110 130, 160 180, 200 240 Z" fill="#2d6a4f" opacity="0.85" />
+        <path d="M190 240 C150 160, 70 130, 40 60 C70 110, 140 170, 190 240 Z" fill="#40916c" opacity="0.9" />
+        <path d="M180 240 C130 180, 60 160, 20 110 C60 150, 130 190, 180 240 Z" fill="#52b788" opacity="0.75" />
+      </svg>
+    </div>
+
+
+
+    <!-- MAIN HERO SCREEN GRID -->
+    <div class="hero-screen-grid">
+
+      <!-- LEFT COLUMN: Frosted Glassmorphic Hero Card -->
+      <div class="hero-left-column">
+        <div class="hero-glass-card">
+          <!-- Live Status Kicker Pill -->
+          <div class="kicker-pill">
+            <span class="live-emerald-dot"></span>
+            <span>INNOVATE</span>
+            <span class="kicker-dot">&bull;</span>
+            <span>BUILD</span>
+            <span class="kicker-dot">&bull;</span>
+            <span>CONNECT</span>
+          </div>
+
+          <!-- Monumental Headline -->
+          <h1 class="hero-title">
+            JSPM's JSCOE<br>
+            <span class="hero-title-blue">IoT Club</span>
+          </h1>
+
+          <!-- Subtitle -->
+          <p class="hero-tagline">
+            A community of curious minds, building smart solutions for a connected tomorrow.
+          </p>
+
+          <!-- CTA Buttons -->
+          <div class="hero-cta-group">
+            <a href="#achievements" class="btn-primary-journey" id="btn-explore-journey"
+              onclick="if(window.goToAchievements){return window.goToAchievements(event);}">
+              <span>Explore Our Journey</span>
+              <span class="btn-arrow-circle">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
+            </a>
+            <a href="#about" class="btn-secondary-about" id="btn-about-hero"
+              onclick="if(window.goToAbout){return window.goToAbout(event);}">
+              <span>About Us</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+
+          <!-- Features Bar -->
+          <div class="features-bar">
+            <div class="feature-unit">
+              <div class="feat-icon-box">
+                <svg class="feat-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0072f5"
+                  stroke-width="2.2">
+                  <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                  <rect x="9" y="9" width="6" height="6"></rect>
+                  <line x1="9" y1="1" x2="9" y2="4"></line>
+                  <line x1="15" y1="1" x2="15" y2="4"></line>
+                  <line x1="9" y1="20" x2="9" y2="23"></line>
+                  <line x1="15" y1="20" x2="15" y2="23"></line>
+                  <line x1="20" y1="9" x2="23" y2="9"></line>
+                  <line x1="20" y1="14" x2="23" y2="14"></line>
+                  <line x1="1" y1="9" x2="4" y2="9"></line>
+                  <line x1="1" y1="14" x2="4" y2="14"></line>
+                </svg>
+              </div>
+              <span class="feat-label">IoT Projects</span>
+            </div>
+
+            <div class="feature-divider"></div>
+
+            <div class="feature-unit">
+              <div class="feat-icon-box">
+                <svg class="feat-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0072f5"
+                  stroke-width="2.2">
+                  <polyline points="16 18 22 12 16 6"></polyline>
+                  <polyline points="8 6 2 12 8 18"></polyline>
+                  <line x1="14" y1="4" x2="10" y2="20"></line>
+                </svg>
+              </div>
+              <span class="feat-label">Technical Skills</span>
+            </div>
+
+            <div class="feature-divider"></div>
+
+            <div class="feature-unit">
+              <div class="feat-icon-box">
+                <svg class="feat-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0072f5"
+                  stroke-width="2.2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </div>
+              <span class="feat-label">Community</span>
+            </div>
+
+            <div class="feature-divider"></div>
+
+            <div class="feature-unit">
+              <div class="feat-icon-box">
+                <svg class="feat-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0072f5"
+                  stroke-width="2.2">
+                  <path d="M9 18h6"></path>
+                  <path d="M10 22h4"></path>
+                  <path d="M12 2a7 7 0 0 0-7 7c0 2.5 1.5 4.5 3 6h8c1.5-1.5 3-3.5 3-6a7 7 0 0 0-7-7z"></path>
+                </svg>
+              </div>
+              <span class="feat-label">Innovation</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Reference Image Layout (Script Headline, 3 Pillars, Curved Photo Collage) -->
+      <div class="hero-right-container">
+
+        <!-- Script Typography: Ideas that Connect Tomorrow -->
+        <div class="ideas-script-block">
+          <div class="script-line-black">Ideas</div>
+          <div class="script-line-black script-offset">that</div>
+          <div class="script-line-blue">Connect</div>
+          <div class="script-line-blue script-offset-2">Tomorrow</div>
+          <!-- Stylized blue hand-drawn squiggle underline -->
+          <svg class="script-squiggle" width="140" height="18" viewBox="0 0 140 18" fill="none" aria-hidden="true">
+            <path d="M4 12 C 38 4, 85 16, 134 6 C 108 14, 58 16, 32 13" stroke="#0072f5" stroke-width="2.8"
+              stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+
+        <!-- 3 Feature Pillars with Circular Outline Icons -->
+        <div class="hero-pillars-stack">
+          <!-- Pillar 1: Innovate -->
+          <div class="pillar-row">
+            <div class="pillar-icon-circle">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0072f5" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18h6"></path>
+                <path d="M10 22h4"></path>
+                <path d="M12 2a7 7 0 0 0-7 7c0 2.5 1.5 4.5 3 6h8c1.5-1.5 3-3.5 3-6a7 7 0 0 0-7-7z"></path>
+              </svg>
+            </div>
+            <div class="pillar-text">
+              <h3 class="pillar-heading">Innovate</h3>
+              <p class="pillar-sub">Turn ideas into real-world solutions</p>
+            </div>
+          </div>
+
+          <!-- Pillar 2: Build -->
+          <div class="pillar-row">
+            <div class="pillar-icon-circle">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0072f5" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path
+                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                </path>
+              </svg>
+            </div>
+            <div class="pillar-text">
+              <h3 class="pillar-heading">Build</h3>
+              <p class="pillar-sub">Work on hands-on IoT projects</p>
+            </div>
+          </div>
+
+          <!-- Pillar 3: Connect -->
+          <div class="pillar-row">
+            <div class="pillar-icon-circle">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0072f5" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <div class="pillar-text">
+              <h3 class="pillar-heading">Connect</h3>
+              <p class="pillar-sub">Collaborate, learn and grow together</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sweeping Curved Photo Collage Panel on Far Right Edge -->
+        <div class="curved-photo-collage">
+          <!-- Flowing Blue Circuit Line Ribbon -->
+          <svg class="collage-circuit-lines" viewBox="0 0 200 600" fill="none" aria-hidden="true">
+            <path d="M40 30 C -25 180, -35 360, 65 580" stroke="#0072f5" stroke-opacity="0.25" stroke-width="2"
+              fill="none" />
+            <path d="M70 50 C 0 200, -10 380, 95 600" stroke="#00d2ff" stroke-opacity="0.38" stroke-width="1.6"
+              fill="none" />
+            <circle cx="4" cy="275" r="4" fill="#00d2ff" />
+            <circle cx="8" cy="370" r="3" fill="#0072f5" />
+          </svg>
+
+          <!-- 3 Photos in Curved Arch Frame -->
+          <div class="collage-arch-frame">
+            <div class="collage-slide slide-top">
+              <img src="soldering.jpg" alt="Student soldering IoT circuit board">
+            </div>
+            <div class="collage-slide slide-mid">
+              <img src="coding.jpg" alt="Coding microcontroller breadboard">
+            </div>
+            <div class="collage-slide slide-bot">
+              <img src="rover.jpg" alt="Autonomous IoT Robotics Rover">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Centered Scroll Invitation Pill at Bottom -->
+    <div class="scroll-invitation-bottom" aria-hidden="true"
+      onclick="if(window.goToAbout){return window.goToAbout(event);}">
+      <div class="mouse-icon-small">
+        <span class="mouse-scroll-dot"></span>
+      </div>
+      <span>Scroll to enter IOT CLUB</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <polyline points="19 12 12 19 5 12"></polyline>
+      </svg>
+    </div>
+
+  </div>
+
+  <!-- ========================================================================
+       SECOND SCREEN UI OVERLAY (Frame 200 - High-Contrast Glassmorphic Card)
+       ======================================================================== -->
+  <div id="screen-two-overlay" class="screen-two-overlay" data-section="about">
+    <div id="about" style="position: absolute; top: 0; left: 0; height: 1px; width: 1px; pointer-events: none;"></div>
+
+    <!-- Directional Soft Scrim for High-Contrast Readability -->
+    <div class="screen2-vignette-scrim" aria-hidden="true"></div>
+
+    <!-- Right Ambient Concentric Waves -->
+    <svg class="bg-waves-right-screen2" viewBox="0 0 400 400" fill="none" aria-hidden="true">
+      <circle cx="350" cy="200" r="120" stroke="#0072f5" stroke-opacity="0.22" stroke-width="2" />
+      <circle cx="350" cy="200" r="190" stroke="#0072f5" stroke-opacity="0.15" stroke-width="1.8" />
+      <circle cx="350" cy="200" r="270" stroke="#0072f5" stroke-opacity="0.08" stroke-width="1.5" />
+    </svg>
+
+    <!-- Upper Container: Frosted Glassmorphic Card -->
+    <div class="screen2-top-container">
+      <div class="screen2-glass-card">
+        <!-- Eyebrow Pill -->
+        <div class="screen2-eyebrow-pill">
+          <span class="eyebrow-pulse-dot"></span>
+          <span>ABOUT US</span>
+          <span class="eyebrow-line"></span>
+        </div>
+
+        <!-- Monumental High-Contrast Headline -->
+        <h2 class="screen2-title">
+          Building Ideas<br>
+          for a <span class="vibrant-blue">Smarter</span><br>
+          <span class="vibrant-blue">Tomorrow</span>
+        </h2>
+
+        <!-- Description Paragraph with Razor-Sharp Clarity -->
+        <p class="screen2-desc">
+          JSPM's JSCOE IoT Club is a student-led community passionate about Internet of Things, innovation and
+          real-world problem solving, We learn, build, collaborate and turn ideas into impactful solutions.
+        </p>
+
+        <!-- Integrated Stats Strip with High-Contrast Badges -->
+        <div class="screen2-stats-strip">
+          <div class="s2-stat-item">
+            <div class="s2-icon-circle">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
+              </svg>
+            </div>
+            <div class="s2-stat-text">
+              <span class="s2-val">50+</span>
+              <span class="s2-lbl">Projects</span>
+            </div>
+          </div>
+
+          <div class="s2-stat-item">
+            <div class="s2-icon-circle">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
+              </svg>
+            </div>
+            <div class="s2-stat-text">
+              <span class="s2-val">100+</span>
+              <span class="s2-lbl">Members</span>
+            </div>
+          </div>
+
+          <div class="s2-stat-item">
+            <div class="s2-icon-circle">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z" />
+              </svg>
+            </div>
+            <div class="s2-stat-text">
+              <span class="s2-val">10+</span>
+              <span class="s2-lbl">Achievements</span>
+            </div>
+          </div>
+
+          <div class="s2-stat-item">
+            <div class="s2-icon-circle">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z" />
+              </svg>
+            </div>
+            <div class="s2-stat-text">
+              <span class="s2-val">&infin;</span>
+              <span class="s2-lbl">Possibilities</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom 4 Feature Cards (Spanning Across the Bottom) -->
+    <div class="screen2-bottom-cards">
+      <!-- Card 1: Our Mission -->
+      <div class="s2-feature-card card-theme-mission">
+        <div class="s2-card-accent-bar"></div>
+        <div class="s2-card-header">
+          <div class="s2-card-icon icon-mission">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <circle cx="12" cy="12" r="6"></circle>
+              <circle cx="12" cy="12" r="2"></circle>
+            </svg>
+          </div>
+          <div class="s2-card-headings">
+            <span class="s2-card-kicker">CORE PURPOSE</span>
+            <h3 class="s2-card-title">Our Mission</h3>
+          </div>
+        </div>
+        <p class="s2-card-text">
+          To create a platform where students explore, learn and build real-world IoT solutions through collaboration,
+          innovation and hands-on experience.
+        </p>
+        <div class="s2-card-footer">
+          <span class="s2-card-chip chip-blue">⚡ Hands-on IoT</span>
+          <span class="s2-card-chip chip-neutral">Real Solutions</span>
+        </div>
+      </div>
+
+      <!-- Card 2: Our Vision -->
+      <div class="s2-feature-card card-theme-vision">
+        <div class="s2-card-accent-bar"></div>
+        <div class="s2-card-header">
+          <div class="s2-card-icon icon-vision">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </div>
+          <div class="s2-card-headings">
+            <span class="s2-card-kicker">FUTURE HORIZON</span>
+            <h3 class="s2-card-title">Our Vision</h3>
+          </div>
+        </div>
+        <p class="s2-card-text">
+          To become a leading student community known for impactful projects, technical excellence and innovation in IoT
+          and emerging technologies.
+        </p>
+        <div class="s2-card-footer">
+          <span class="s2-card-chip chip-emerald">🎯 Excellence</span>
+          <span class="s2-card-chip chip-neutral">Edge & AI</span>
+        </div>
+      </div>
+
+      <!-- Card 3: Our Community -->
+      <div class="s2-feature-card card-theme-community">
+        <div class="s2-card-accent-bar"></div>
+        <div class="s2-card-header">
+          <div class="s2-card-icon icon-community">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </div>
+          <div class="s2-card-headings">
+            <span class="s2-card-kicker">PEOPLE & CULTURE</span>
+            <h3 class="s2-card-title">Our Community</h3>
+          </div>
+        </div>
+        <p class="s2-card-text">
+          A diverse group of learners, makers and problem solvers working together, sharing knowledge and growing
+          through real experiences.
+        </p>
+        <div class="s2-card-footer">
+          <span class="s2-card-chip chip-purple">🤝 Peer Network</span>
+          <span class="s2-card-chip chip-neutral">Makers</span>
+        </div>
+      </div>
+
+      <!-- Card 4: What We Do -->
+      <div class="s2-feature-card card-theme-action">
+        <div class="s2-card-accent-bar"></div>
+        <div class="s2-card-header">
+          <div class="s2-card-icon icon-action">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+              <rect x="9" y="9" width="6" height="6"></rect>
+              <line x1="9" y1="1" x2="9" y2="4"></line>
+              <line x1="15" y1="1" x2="15" y2="4"></line>
+              <line x1="9" y1="20" x2="9" y2="23"></line>
+              <line x1="15" y1="20" x2="15" y2="23"></line>
+            </svg>
+          </div>
+          <div class="s2-card-headings">
+            <span class="s2-card-kicker">PRACTICAL SKILLS</span>
+            <h3 class="s2-card-title">What We Do</h3>
+          </div>
+        </div>
+        <p class="s2-card-text">
+          We organize workshops, build IoT projects, participate in competitions, collaborate on research ideas and
+          create opportunities for students to gain practical skills.
+        </p>
+        <div class="s2-card-footer">
+          <span class="s2-card-chip chip-cyan">🛠 Workshops</span>
+          <span class="s2-card-chip chip-neutral">Competitions</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       THIRD SCREEN UI OVERLAY (Frame 450 - Achievements Showcase)
+       ======================================================================== -->
+  <div id="screen-three-overlay" class="screen-three-overlay" data-section="achievements">
+    <div id="achievements" style="position: absolute; top: 0; left: 0; height: 1px; width: 1px; pointer-events: none;"></div>
+
+    <!-- Ambient Readability Scrim -->
+    <div class="screen3-scrim" aria-hidden="true"></div>
+
+    <!-- Decorative Flowing Blue Wave Lines -->
+    <svg class="bg-waves-achieve-left" viewBox="0 0 600 400" fill="none" aria-hidden="true">
+      <path d="M-60 120 C 120 40, 180 260, 420 170 C 580 110, 480 320, 660 360" stroke="#0072f5" stroke-opacity="0.16"
+        stroke-width="2" />
+      <path d="M-60 160 C 140 80, 200 300, 450 200 C 600 140, 500 350, 680 390" stroke="#00d2ff" stroke-opacity="0.12"
+        stroke-width="1.6" />
+      <path d="M-60 200 C 160 120, 220 340, 480 230 C 620 170, 520 380, 700 420" stroke="#0072f5" stroke-opacity="0.08"
+        stroke-width="1.2" />
+    </svg>
+    <svg class="bg-waves-achieve-right" viewBox="0 0 500 400" fill="none" aria-hidden="true">
+      <path d="M60 400 C 160 280, 260 320, 390 190 C 460 120, 530 80, 600 20" stroke="#0072f5" stroke-opacity="0.14"
+        stroke-width="2" />
+      <path d="M90 400 C 190 300, 280 340, 410 210 C 480 140, 550 100, 620 40" stroke="#00d2ff" stroke-opacity="0.1"
+        stroke-width="1.5" />
+    </svg>
+
+    <!-- Main Content Container -->
+    <div class="achieve-main-container">
+
+      <!-- Header: Eyebrow + Headline + Subheadline -->
+      <div class="achieve-header-block">
+        <div class="achieve-eyebrow-row">
+          <span class="achieve-eyebrow-text">OUR ACHIEVEMENTS</span>
+          <span class="achieve-eyebrow-line"></span>
+        </div>
+        <h2 class="achieve-headline">
+          Ideas Today,<br>
+          <span class="achieve-headline-blue">Impact Tomorrow</span>
+        </h2>
+        <p class="achieve-subheadline">
+          From hackathons to real-world projects, our journey is filled with milestones that reflect the passion,
+          innovation and dedication of our members.
+        </p>
+      </div>
+
+      <!-- Two-Column Showcase Area -->
+      <div class="achieve-showcase-grid">
+
+        <!-- LEFT COLUMN: 3D Rotating Cards Carousel -->
+        <div class="achieve-carousel-column">
+          <!-- 3D Perspective Stage -->
+          <div class="achieve-3d-stage" id="achieve-3d-stage">
+            <!-- Glowing Orbital Ring -->
+            <div class="achieve-orbit-ring" aria-hidden="true"></div>
+
+            <!-- 3D Carousel Cylinder -->
+            <div class="achieve-cylinder" id="achieve-cylinder">
+
+              <!-- Card 1: Techathon 3.0 (Featured Center) -->
+              <div class="achieve-card" data-index="0">
+                <div class="achieve-card-img-wrap">
+                  <img src="IOT pic/IOT pic/Techathon 3.0 best project award.jpg" alt="Techathon 3.0" loading="lazy">
+                </div>
+                <div class="achieve-card-body">
+                  <div class="achieve-card-title-row">
+                    <div class="achieve-card-title">
+                      <span class="trophy-emoji">🏆</span> Techathon 3.0
+                    </div>
+                    <span class="badge-winner">Winner</span>
+                  </div>
+                  <p class="achieve-card-desc">
+                    Won the Best Project award at Techathon 3.0 for our innovative IoT solution.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Card 2: SIH 2024 -->
+              <div class="achieve-card" data-index="1">
+                <div class="achieve-card-img-wrap">
+                  <img src="IOT pic/IOT pic/SIh 2024 (2).jpg" alt="SIH 2024" loading="lazy">
+                </div>
+                <div class="achieve-card-body">
+                  <div class="achieve-card-title-row">
+                    <div class="achieve-card-title">
+                      <span class="trophy-emoji">🏆</span> SIH 2024
+                    </div>
+                    <span class="badge-finalist">Winner</span>
+                  </div>
+                  <p class="achieve-card-desc">
+                    Winner in Smart India Hackathon for our real-world problem solution.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Card 3: IIC Manipal University Jaipur -->
+              <div class="achieve-card" data-index="2">
+                <div class="achieve-card-img-wrap">
+                  <img src="IOT pic/IOT pic/IIC 1st.png" alt="IIC Manipal University Jaipur" loading="lazy">
+                </div>
+                <div class="achieve-card-body">
+                  <div class="achieve-card-title-row">
+                    <div class="achieve-card-title">
+                      <span class="trophy-emoji">🏆</span> IIC Winner
+                    </div>
+                    <span class="badge-finalist">Winner</span>
+                  </div>
+                  <p class="achieve-card-desc">
+                    Winner at IIC, JSPM' JSCOE for our IoT-based project.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Card 4: QUEST Ingenium National Champions -->
+              <div class="achieve-card" data-index="3">
+                <div class="achieve-card-img-wrap">
+                  <img src="IOT pic/IOT pic/Quest Ingenium 2018  - Winner.jpg" alt="QUEST Ingenium Winner"
+                    loading="lazy">
+                </div>
+                <div class="achieve-card-body">
+                  <div class="achieve-card-title-row">
+                    <div class="achieve-card-title">
+                      <span class="trophy-emoji">🏆</span> QUEST Ingenium
+                    </div>
+                    <span class="badge-winner">Winner</span>
+                  </div>
+                  <p class="achieve-card-desc">
+                    National Champions at Quest Ingenium showcasing cutting-edge engineering.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Card 5: AICTE Chhatra Vishwakarma Award -->
+              <div class="achieve-card" data-index="4">
+                <div class="achieve-card-img-wrap">
+                  <img src="IOT pic/IOT pic/AICTE Chhatra Vishwakarma Award 2019.jpg" alt="AICTE Chhatra Vishwakarma"
+                    loading="lazy">
+                </div>
+                <div class="achieve-card-body">
+                  <div class="achieve-card-title-row">
+                    <div class="achieve-card-title">
+                      <span class="trophy-emoji">🏆</span> AICTE Award
+                    </div>
+                    <span class="badge-award">National Award</span>
+                  </div>
+                  <p class="achieve-card-desc">
+                    Honored with prestigious AICTE Chhatra Vishwakarma Award for technical innovation.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Card 6: Quantum Arena Winner -->
+              <div class="achieve-card" data-index="5">
+                <div class="achieve-card-img-wrap">
+                  <img src="IOT pic/IOT pic/Quantum Arena Winner_1.jpeg" alt="Quantum Arena Winner" loading="lazy">
+                </div>
+                <div class="achieve-card-body">
+                  <div class="achieve-card-title-row">
+                    <div class="achieve-card-title">
+                      <span class="trophy-emoji">🏆</span> Quantum Arena
+                    </div>
+                    <span class="badge-winner">Winner</span>
+                  </div>
+                  <p class="achieve-card-desc">
+                    1st place champions in state-level competition and smart IoT prototyping.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Card 7: Innovation 2K25 Runner Up -->
+              <div class="achieve-card" data-index="6">
+                <div class="achieve-card-img-wrap">
+                  <img src="IOT pic/IOT pic/Innovation 2k25 Runner Up.jpeg" alt="Innovation 2k25 Runner Up"
+                    loading="lazy">
+                </div>
+                <div class="achieve-card-body">
+                  <div class="achieve-card-title-row">
+                    <div class="achieve-card-title">
+                      <span class="trophy-emoji">🏆</span> Innovation 2K25
+                    </div>
+                    <span class="badge-finalist">Runner Up</span>
+                  </div>
+                  <p class="achieve-card-desc">
+                    Runner-up award for high-impact IoT hardware design and wireless telemetry.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Card 8: Bangkok International Conference -->
+              <div class="achieve-card" data-index="7">
+                <div class="achieve-card-img-wrap">
+                  <img src="IOT pic/IOT pic/IoT Club students in International Conference at Bangkok University.jpg"
+                    alt="Bangkok International Conference" loading="lazy">
+                </div>
+                <div class="achieve-card-body">
+                  <div class="achieve-card-title-row">
+                    <div class="achieve-card-title">
+                      <span class="trophy-emoji">🏆</span> Bangkok Univ
+                    </div>
+                    <span class="badge-award">Global Delegate</span>
+                  </div>
+                  <p class="achieve-card-desc">
+                    Presented student research papers at Bangkok University International Forum.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Carousel Controls: Previous Arrow, Dots, Next Arrow -->
+          <div class="carousel-controls-bar">
+            <button class="carousel-arrow-btn" id="carousel-btn-prev" aria-label="Previous Achievement">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <div class="carousel-dots-row" id="carousel-dots">
+              <span class="achieve-dot active" data-index="0"></span>
+              <span class="achieve-dot" data-index="1"></span>
+              <span class="achieve-dot" data-index="2"></span>
+              <span class="achieve-dot" data-index="3"></span>
+              <span class="achieve-dot" data-index="4"></span>
+              <span class="achieve-dot" data-index="5"></span>
+              <span class="achieve-dot" data-index="6"></span>
+              <span class="achieve-dot" data-index="7"></span>
+            </div>
+            <button class="carousel-arrow-btn" id="carousel-btn-next" aria-label="Next Achievement">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Video Player Card & Footer Bar -->
+        <div class="achieve-video-column">
+          <!-- Glassmorphic Video Player Card -->
+          <div class="video-player-card">
+            <div class="video-frame-container">
+              <video id="achieve-video" src="achievementS (1).mp4" preload="metadata" playsinline></video>
+
+              <!-- Center Play/Pause Overlay Button -->
+              <button class="video-play-overlay-btn" id="video-play-toggle" aria-label="Play Video">
+                <svg class="play-icon-svg" width="34" height="34" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                <svg class="pause-icon-svg" width="34" height="34" viewBox="0 0 24 24" fill="currentColor"
+                  style="display: none;">
+                  <rect x="6" y="4" width="4" height="16"></rect>
+                  <rect x="14" y="4" width="4" height="16"></rect>
+                </svg>
+              </button>
+
+              <!-- Video Custom Controls Bar -->
+              <div class="video-controls-bottom">
+                <span class="video-time-display" id="video-time">0:00 / 2:15</span>
+                <div class="video-progress-track" id="video-seek-track">
+                  <div class="video-progress-fill" id="video-progress-bar"></div>
+                </div>
+                <button class="video-mute-btn" id="video-mute-toggle" aria-label="Mute Video">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                  </svg>
+                </button>
+                <button class="video-fs-btn" id="video-fullscreen-toggle" aria-label="Fullscreen">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path
+                      d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3">
+                    </path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Video Card Footer Info Row -->
+          <div class="video-info-footer">
+            <div class="video-info-left">
+              <div class="video-info-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#0072f5">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+              </div>
+              <div class="video-info-text">
+                <h4 class="video-info-title">Watch Our Journey</h4>
+                <p class="video-info-desc">A glimpse of our achievements, events and the incredible journey of JSPM's
+                  JSCOE IoT Club.</p>
+              </div>
+            </div>
+
+            <!-- Bottom-right Action Pill / Next Button -->
+            <div class="video-actions-right">
+              <button class="btn-video-nav-prev" id="btn-video-prev" aria-label="Previous">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+              </button>
+              <button class="btn-video-nav-next" id="btn-video-next" aria-label="Next">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       FOURTH SCREEN UI OVERLAY (Frame 680-800 - Members & Contact Us)
+       ======================================================================== -->
+  <div id="screen-four-overlay" class="screen-four-overlay">
+
+    <!-- Ambient Readability Scrim over Lab Background -->
+    <div class="screen4-scrim" aria-hidden="true"></div>
+
+    <!-- MAIN SCROLLABLE CONTENT WRAPPER -->
+    <div class="screen4-scroll-wrapper" id="screen4-scroll-wrapper">
+
+      <!-- SECTION A: MEMBERS HERO SHOWCASE (Matching Reference Image) -->
+      <section class="members-hero-section" id="members">
+        <div class="members-container">
+
+          <!-- Eyebrow Badge -->
+          <div class="members-eyebrow">
+            <span class="eyebrow-line"></span>
+            <span>OUR MEMBERS</span>
+            <span class="eyebrow-line"></span>
+          </div>
+
+          <!-- Monumental Headline -->
+          <h2 class="members-title">
+            Meet Our Members
+          </h2>
+
+          <!-- Subtitle -->
+          <p class="members-subtitle">
+            A community of innovators, learners and problem solvers working together to build impactful IoT solutions.
+          </p>
+
+          <!-- 3 Year-Wise Student Cards Grid -->
+          <div class="members-year-grid">
+
+            <!-- Card 1: Second Year (Blue Theme) -->
+            <div class="year-member-card card-second-year">
+              <div class="year-card-content">
+                <div class="year-card-top">
+                  <div class="year-badge-icon badge-blue">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="9" cy="7" r="4"></circle>
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                  </div>
+                  <h3 class="year-card-title">Second Year</h3>
+                </div>
+                <p class="year-card-desc">
+                  Curious minds exploring the world of IoT, building foundations for innovation.
+                </p>
+                <div class="year-card-footer">
+                  <div class="avatar-group-wrap">
+                    <div class="avatar-stack">
+                      <span class="avatar-circle av-1">👨‍🎓</span>
+                      <span class="avatar-circle av-2">👩‍🎓</span>
+                      <span class="avatar-circle av-3">🧑‍💻</span>
+                    </div>
+                    <div class="avatar-count-text">
+                      <span class="count-num">25+</span>
+                      <span class="count-lbl">Members</span>
+                    </div>
+                  </div>
+                  <button class="year-expand-btn btn-blue" aria-label="Explore Second Year Members">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="year-card-visual">
+                <img src="member_year2.jpg" alt="Second Year IoT Members in Lab">
+                <div class="year-card-fade-overlay"></div>
+              </div>
+            </div>
+
+            <!-- Card 2: Third Year (Amber Theme) -->
+            <div class="year-member-card card-third-year">
+              <div class="year-card-content">
+                <div class="year-card-top">
+                  <div class="year-badge-icon badge-amber">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="9" cy="7" r="4"></circle>
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                  </div>
+                  <h3 class="year-card-title">Third Year</h3>
+                </div>
+                <p class="year-card-desc">
+                  Turning ideas into real projects and gaining hands-on experience.
+                </p>
+                <div class="year-card-footer">
+                  <div class="avatar-group-wrap">
+                    <div class="avatar-stack">
+                      <span class="avatar-circle av-4">👩‍💻</span>
+                      <span class="avatar-circle av-5">👨‍🔧</span>
+                      <span class="avatar-circle av-6">🧑‍🎓</span>
+                    </div>
+                    <div class="avatar-count-text">
+                      <span class="count-num">30+</span>
+                      <span class="count-lbl">Members</span>
+                    </div>
+                  </div>
+                  <button class="year-expand-btn btn-amber" aria-label="Explore Third Year Members">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="year-card-visual">
+                <img src="member_year3.jpg" alt="Third Year IoT Members Building Robots">
+                <div class="year-card-fade-overlay"></div>
+              </div>
+            </div>
+
+            <!-- Card 3: Final Year (Purple Theme) -->
+            <div class="year-member-card card-final-year">
+              <div class="year-card-content">
+                <div class="year-card-top">
+                  <div class="year-badge-icon badge-purple">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="9" cy="7" r="4"></circle>
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                  </div>
+                  <h3 class="year-card-title">Final Year</h3>
+                </div>
+                <p class="year-card-desc">
+                  Leading, mentoring and building impactful solutions for real-world challenges.
+                </p>
+                <div class="year-card-footer">
+                  <div class="avatar-group-wrap">
+                    <div class="avatar-stack">
+                      <span class="avatar-circle av-7">👩‍🔬</span>
+                      <span class="avatar-circle av-8">👨‍💼</span>
+                      <span class="avatar-circle av-9">🧑‍💻</span>
+                    </div>
+                    <div class="avatar-count-text">
+                      <span class="count-num">20+</span>
+                      <span class="count-lbl">Members</span>
+                    </div>
+                  </div>
+                  <button class="year-expand-btn btn-purple" aria-label="Explore Final Year Members">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="year-card-visual">
+                <img src="member_year4.jpg" alt="Final Year IoT Members Mentoring">
+                <div class="year-card-fade-overlay"></div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Club Coordinators Section Divider -->
+          <div class="coordinators-header-block">
+            <div class="members-eyebrow">
+              <span class="eyebrow-line"></span>
+              <span>CLUB COORDINATORS</span>
+              <span class="eyebrow-line"></span>
+            </div>
+            <p class="coordinators-subtitle">
+              Guiding the club, supporting our journey and helping us achieve greater heights.
+            </p>
+          </div>
+
+          <!-- 2 Club Coordinator Cards Grid -->
+          <div class="coordinators-cards-grid">
+
+            <!-- Coordinator 1: Dr. Dattatray Waghole -->
+            <div class="coordinator-profile-card">
+              <div class="coord-avatar-wrap">
+                <div class="coord-avatar-ring">
+                  <!-- Blank image placeholder (replace with actual picture later) -->
+                  <div class="coord-avatar-placeholder" aria-label="Photo placeholder for Dr. Dattatray Waghole">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div class="coord-info-body">
+                <h3 class="coord-name">Dr. Dattatray Waghole</h3>
+                <span class="coord-role">Club Coordinator</span>
+                <p class="coord-bio">
+                  Leads the club's vision, mentors members and drives innovation through hands-on projects and
+                  collaborative learning.
+                </p>
+                <div class="coord-contact-row">
+                  <div class="coord-social-icons">
+                    <a href="https://linkedin.com" target="_blank" rel="noopener" class="coord-icon-btn"
+                      aria-label="LinkedIn">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                          d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.738-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                      </svg>
+                    </a>
+                    <a href="https://github.com" target="_blank" rel="noopener" class="coord-icon-btn"
+                      aria-label="GitHub">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                          d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+                      </svg>
+                    </a>
+                    <a href="mailto:dattatraywaghole@jspmjscoe.edu.in" class="coord-icon-btn email-btn"
+                      aria-label="Email Dr. Dattatray Waghole">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                      </svg>
+                    </a>
+                  </div>
+                  <a href="tel:7387993399" class="coord-phone-pill">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <path
+                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                      </path>
+                    </svg>
+                    <span>7387993399</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Coordinator 2: Prof. Smita Wagh -->
+            <div class="coordinator-profile-card">
+              <div class="coord-avatar-wrap">
+                <div class="coord-avatar-ring">
+                  <!-- Blank image placeholder (replace with actual picture later) -->
+                  <div class="coord-avatar-placeholder" aria-label="Photo placeholder for Prof. Smita Wagh">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div class="coord-info-body">
+                <h3 class="coord-name">Prof. Smita Wagh</h3>
+                <span class="coord-role">Club Coordinator</span>
+                <p class="coord-bio">
+                  Organizes club activities, supports members and helps in building a strong community through events,
+                  workshops and mentorship.
+                </p>
+                <div class="coord-contact-row">
+                  <div class="coord-social-icons">
+                    <a href="https://linkedin.com" target="_blank" rel="noopener" class="coord-icon-btn"
+                      aria-label="LinkedIn">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                          d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.738-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                      </svg>
+                    </a>
+                    <a href="https://github.com" target="_blank" rel="noopener" class="coord-icon-btn"
+                      aria-label="GitHub">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                          d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+                      </svg>
+                    </a>
+                    <a href="mailto:waghsmita050@gmail.com" class="coord-icon-btn email-btn"
+                      aria-label="Email Prof. Smita Wagh">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                      </svg>
+                    </a>
+                  </div>
+                  <a href="tel:8669508564" class="coord-phone-pill">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <path
+                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                      </path>
+                    </svg>
+                    <span>8669508564</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Bottom Prompt to Scroll to Contact Us -->
+          <div class="members-to-contact-hint">
+            <a href="#contact" class="btn-goto-contact">
+              <span>Contact Us Below</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <polyline points="19 12 12 19 5 12"></polyline>
+              </svg>
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SECTION B: CONTACT US (Deep Obsidian Black Background) -->
+      <section class="contact-black-section" id="contact">
+        <!-- Ambient Radial Glows -->
+        <div class="contact-ambient-glow" aria-hidden="true"></div>
+        <div class="contact-grid-pattern" aria-hidden="true"></div>
+
+        <div class="contact-container">
+
+          <!-- Section Eyebrow & Title -->
+          <div class="contact-header">
+            <div class="contact-badge">
+              <span class="pulse-cyan-dot"></span>
+              <span>GET IN TOUCH</span>
+            </div>
+            <h2 class="contact-title">
+              Let's Connect & <span class="text-cyan-gradient">Innovate Together</span>
+            </h2>
+            <p class="contact-subtitle">
+              Have a project idea, inquiry, or wish to collaborate? Reach out to our coordinators directly or send us a
+              message below.
+            </p>
+          </div>
+
+          <!-- Direct Coordinator Contact Cards Row (Black/Neon Glass Theme) -->
+          <div class="contact-coordinators-strip">
+
+            <div class="contact-coord-box">
+              <div class="contact-coord-top">
+                <img src="dr_dattatray_waghole.jpg" alt="Dr. Dattatray Waghole" class="contact-coord-pic">
+                <div class="contact-coord-meta">
+                  <h4 class="contact-coord-name">Dr. Dattatray Waghole</h4>
+                  <span class="contact-coord-tag">Club Coordinator</span>
+                </div>
+              </div>
+              <div class="contact-coord-links">
+                <a href="mailto:dattatraywaghole@jspmjscoe.edu.in" class="contact-link-row">
+                  <div class="contact-icon-bubble">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                      <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                  </div>
+                  <span class="link-label">dattatraywaghole@jspmjscoe.edu.in</span>
+                </a>
+                <a href="tel:7387993399" class="contact-link-row">
+                  <div class="contact-icon-bubble">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path
+                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                      </path>
+                    </svg>
+                  </div>
+                  <span class="link-label">+91 7387993399</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="contact-coord-box">
+              <div class="contact-coord-top">
+                <img src="prof_smita_wagh.jpg" alt="Prof. Smita Wagh" class="contact-coord-pic">
+                <div class="contact-coord-meta">
+                  <h4 class="contact-coord-name">Prof. Smita Wagh</h4>
+                  <span class="contact-coord-tag">Club Coordinator</span>
+                </div>
+              </div>
+              <div class="contact-coord-links">
+                <a href="mailto:waghsmita050@gmail.com" class="contact-link-row">
+                  <div class="contact-icon-bubble">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                      <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                  </div>
+                  <span class="link-label">waghsmita050@gmail.com</span>
+                </a>
+                <a href="tel:8669508564" class="contact-link-row">
+                  <div class="contact-icon-bubble">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path
+                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                      </path>
+                    </svg>
+                  </div>
+                  <span class="link-label">+91 8669508564</span>
+                </a>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Two-Column Interactive Grid: Message Form + Lab Info -->
+          <div class="contact-main-grid">
+
+            <!-- Left: Glassmorphic Inquiry Form -->
+            <div class="contact-form-card">
+              <h3 class="form-card-title">Send Us a Message</h3>
+              <p class="form-card-desc">Fill out the form and our team will get back to you shortly.</p>
+
+              <form id="contact-inquiry-form" class="contact-form-inner"
+                onsubmit="event.preventDefault(); document.getElementById('form-success-banner').style.display='flex';">
+                <div class="form-row-duo">
+                  <div class="form-group">
+                    <label for="contact-name">Your Name</label>
+                    <input type="text" id="contact-name" placeholder="John Doe" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="contact-email">Your Email</label>
+                    <input type="email" id="contact-email" placeholder="john@example.com" required>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="contact-subject">Topic of Inquiry</label>
+                  <select id="contact-subject">
+                    <option value="membership">Club Membership & Joining</option>
+                    <option value="project">Project Collaboration</option>
+                    <option value="workshop">Workshops & Hackathons</option>
+                    <option value="sponsorship">Sponsorship & Industry Partner</option>
+                    <option value="general">General Query</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="contact-message">Message</label>
+                  <textarea id="contact-message" rows="4" placeholder="Tell us about your project, idea or question..."
+                    required></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit-message">
+                  <span>Send Message</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                </button>
+
+                <!-- Success Banner -->
+                <div id="form-success-banner" class="form-success-box" style="display: none;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span>Thank you! Your message has been received. Our coordinators will contact you soon.</span>
+                </div>
+              </form>
+            </div>
+
+            <!-- Right: Lab Venue Location & Info Card -->
+            <div class="contact-info-card">
+              <h3 class="form-card-title">IOT Club</h3>
+              <p class="form-card-desc">Visit us at Room B-212 to experience our active projects and student workspace.
+              </p>
+
+              <div class="info-items-stack">
+                <div class="info-item-row">
+                  <div class="info-icon-pill">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00d2ff" stroke-width="2">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                      <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                  </div>
+                  <div class="info-text-col">
+                    <span class="info-label">Address</span>
+                    <p class="info-val">Room B-212 (IoT Lab), JSPM's Jayawantrao Sawant College of Engineering (JSCOE),
+                      Survey No. 58, Handewadi Road, Hadapsar, Pune - 411028, Maharashtra, India</p>
+                  </div>
+                </div>
+
+                <div class="info-item-row">
+                  <div class="info-icon-pill">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00d2ff" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                  </div>
+                  <div class="info-text-col">
+                    <span class="info-label">Lab Hours</span>
+                    <p class="info-val">Monday – Saturday: 9:00 AM – 6:00 PM IST</p>
+                  </div>
+                </div>
+
+                <div class="info-item-row">
+                  <div class="info-icon-pill">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00d2ff" stroke-width="2">
+                      <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                      <line x1="8" y1="21" x2="16" y2="21"></line>
+                      <line x1="12" y1="17" x2="12" y2="21"></line>
+                    </svg>
+                  </div>
+                  <div class="info-text-col">
+                    <span class="info-label">Department</span>
+                    <p class="info-val">Department of Computer Engineering</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Stylized Cyber Location Badge -->
+              <div class="lab-badge-banner">
+                <span class="badge-dot-live"></span>
+                <span class="badge-code-label">ROOM B-212 • ACTIVE HUB</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Deep Black Footer -->
+          <footer class="contact-footer-bar">
+            <div class="footer-left-brand">
+              <span class="footer-brand-title">JSPM's JSCOE <span class="text-cyan">IoT Club</span></span>
+              <p class="footer-tagline">Building smart solutions for a connected tomorrow.</p>
+            </div>
+
+            <div class="footer-center-links">
+              <a href="#home" class="footer-nav-link" id="footer-link-home">Home</a>
+              <a href="#about" class="footer-nav-link" id="footer-link-about">About</a>
+              <a href="#achievements" class="footer-nav-link" id="footer-link-achieve">Achievements</a>
+              <a href="#members" class="footer-nav-link" id="footer-link-members">Members</a>
+              <a href="#contact" class="footer-nav-link" id="footer-link-contact">Contact</a>
+            </div>
+
+            <div class="footer-right-copy">
+              <span>© 2026 JSPM's JSCOE IoT Club. All Rights Reserved.</span>
+            </div>
+          </footer>
+
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Scroll Track providing the 650vh scroll timeline -->
+  <div id="scroll-track"></div>
+
+  <script src="script.js?v=20261015_02"></script>
+</body>
+
+</html>
