@@ -1630,6 +1630,10 @@ html, body {
   background: #005fcc;
 }
 
+.video-play-overlay-btn svg {
+  pointer-events: none;
+}
+
 .video-controls-bottom {
   position: absolute;
   bottom: 0;
@@ -1705,6 +1709,14 @@ html, body {
   display: flex;
   align-items: center;
   gap: 12px;
+  cursor: pointer;
+  user-select: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.video-info-left:hover {
+  opacity: 0.85;
+  transform: translateX(2px);
 }
 
 .video-info-icon {

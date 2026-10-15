@@ -746,6 +746,9 @@
     const progBar = document.getElementById('video-progress-bar');
     const muteBtn = document.getElementById('video-mute-toggle');
     const fsBtn = document.getElementById('video-fullscreen-toggle');
+    const container = video ? video.closest('.video-frame-container') : null;
+    const controlsBottom = document.querySelector('.video-controls-bottom');
+    const infoLeft = document.querySelector('.video-info-left');
 
     if (!video) return;
 
@@ -765,17 +768,57 @@
       }
     }
 
-    function togglePlay() {
+    function togglePlay(e) {
+      if (e) {
+        if (typeof e.stopPropagation === 'function') e.stopPropagation();
+      }
+
       if (video.paused || video.ended) {
-        video.play().then(() => updatePlayState(true)).catch(() => {});
+        if (!video.currentSrc && !video.src) {
+          video.src = 'achievements.mp4';
+          video.load();
+        }
+        const promise = video.play();
+        if (promise !== undefined) {
+          promise
+            .then(() => {
+              updatePlayState(true);
+            })
+            .catch((err) => {
+              console.warn("Direct video play blocked by browser, retrying with muted audio:", err);
+              video.muted = true;
+              if (muteBtn) muteBtn.style.opacity = '0.5';
+              video.play()
+                .then(() => updatePlayState(true))
+                .catch((err2) => {
+                  console.error("Playback failed completely:", err2);
+                });
+            });
+        }
       } else {
         video.pause();
         updatePlayState(false);
       }
     }
 
-    if (playBtn) playBtn.addEventListener('click', togglePlay);
+    // Attach click listeners to all intuitive trigger elements
+    if (playBtn) {
+      playBtn.addEventListener('click', togglePlay);
+    }
     video.addEventListener('click', togglePlay);
+    if (container) {
+      container.addEventListener('click', togglePlay);
+    }
+    if (infoLeft) {
+      infoLeft.addEventListener('click', togglePlay);
+    }
+
+    // Prevent bottom controls clicks from triggering play/pause
+    if (controlsBottom) {
+      controlsBottom.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+    }
 
     video.addEventListener('play', () => updatePlayState(true));
     video.addEventListener('pause', () => updatePlayState(false));
@@ -795,8 +838,17 @@
       }
     });
 
+    video.addEventListener('error', () => {
+      console.warn("Video failed loading primary source, trying fallback source...");
+      if (!video.src.includes('achievementS (1).mp4')) {
+        video.src = 'achievementS (1).mp4';
+        video.load();
+      }
+    });
+
     if (seekTrack) {
       seekTrack.addEventListener('click', (e) => {
+        e.stopPropagation();
         const rect = seekTrack.getBoundingClientRect();
         const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
         if (video.duration) {
@@ -806,23 +858,30 @@
     }
 
     if (muteBtn) {
-      muteBtn.addEventListener('click', () => {
+      muteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         video.muted = !video.muted;
         muteBtn.style.opacity = video.muted ? '0.5' : '1';
       });
     }
 
     if (fsBtn) {
-      fsBtn.addEventListener('click', () => {
+      fsBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         if (!document.fullscreenElement) {
-          video.requestFullscreen().catch(() => {});
+          if (container && container.requestFullscreen) {
+            container.requestFullscreen().catch(() => {
+              video.requestFullscreen().catch(() => {});
+            });
+          } else {
+            video.requestFullscreen().catch(() => {});
+          }
         } else {
           document.exitFullscreen().catch(() => {});
         }
       });
     }
 
-    const container = video.closest('.video-frame-container');
     if (container) {
       container.addEventListener('mouseenter', () => {
         if (!video.paused && playBtn) playBtn.style.opacity = '0.85';

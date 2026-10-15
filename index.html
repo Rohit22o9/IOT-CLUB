@@ -798,10 +798,12 @@
 
         <!-- RIGHT COLUMN: Video Player Card & Footer Bar -->
         <div class="achieve-video-column">
-          <!-- Glassmorphic Video Player Card -->
           <div class="video-player-card">
             <div class="video-frame-container">
-              <video id="achieve-video" src="achievementS (1).mp4" preload="metadata" playsinline></video>
+              <video id="achieve-video" src="achievements.mp4" preload="auto" playsinline webkit-playsinline>
+                <source src="achievements.mp4" type="video/mp4">
+                <source src="achievementS (1).mp4" type="video/mp4">
+              </video>
 
               <!-- Center Play/Pause Overlay Button -->
               <button class="video-play-overlay-btn" id="video-play-toggle" aria-label="Play Video">
