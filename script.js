@@ -51,11 +51,92 @@
   let dpr = 1;
 
   // Frame URL Resolver with Cache-Buster
-  const FRAME_VERSION = 'v=20261015_06';
+  const FRAME_VERSION = 'v=20261015_07';
   function getFrameUrl(index) {
     const frameNumber = index + 1;
     const pad = String(frameNumber).padStart(5, '0');
     return `${FRAME_DIRECTORY}/${pad}.jpg?${FRAME_VERSION}`;
+  }
+
+  // --- 0. Attractive IoT Intro Preloader Controller ---
+  function initPreloader() {
+    const preloader = document.getElementById('app-preloader');
+    if (!preloader) return;
+
+    const progBar = document.getElementById('preloader-progress-bar');
+    const percentNum = document.getElementById('preloader-percent-num');
+    const statusText = document.getElementById('preloader-status-text');
+
+    let currentPercent = 0;
+    let targetPercent = 18;
+    let isComplete = false;
+    const startTime = Date.now();
+    const MIN_DISPLAY_TIME = 1300; // ms for a smooth, premium visual experience
+
+    const statusMessages = [
+      { at: 0, text: "Initializing IoT Core..." },
+      { at: 35, text: "Loading 3D Visual Walkthrough..." },
+      { at: 68, text: "Calibrating Interactive Lab..." },
+      { at: 92, text: "Welcome to JSPM's JSCOE IoT Club!" }
+    ];
+
+    function updatePreloaderUI(val) {
+      if (progBar) progBar.style.width = `${val}%`;
+      if (percentNum) percentNum.textContent = `${Math.round(val)}%`;
+
+      if (statusText) {
+        for (let i = statusMessages.length - 1; i >= 0; i--) {
+          if (val >= statusMessages[i].at) {
+            statusText.textContent = statusMessages[i].text;
+            break;
+          }
+        }
+      }
+    }
+
+    window.notifyPreloaderProgress = function (percent) {
+      if (percent > targetPercent) {
+        targetPercent = Math.min(100, percent);
+      }
+    };
+
+    const interval = setInterval(() => {
+      // Smooth interpolation towards target
+      if (currentPercent < targetPercent) {
+        currentPercent += (targetPercent - currentPercent) * 0.16 + 0.6;
+        if (currentPercent > targetPercent) currentPercent = targetPercent;
+      }
+
+      updatePreloaderUI(currentPercent);
+
+      const elapsed = Date.now() - startTime;
+      const firstFrameReady = framesCache[0] && framesCache[0].complete && framesCache[0].naturalWidth > 0;
+
+      if (firstFrameReady && elapsed >= MIN_DISPLAY_TIME && !isComplete) {
+        targetPercent = 100;
+        if (currentPercent >= 99) {
+          isComplete = true;
+          clearInterval(interval);
+          updatePreloaderUI(100);
+
+          setTimeout(() => {
+            preloader.classList.add('is-loaded');
+            setTimeout(() => {
+              preloader.style.display = 'none';
+            }, 650);
+          }, 180);
+        }
+      } else if (elapsed > 3200 && !isComplete) {
+        // Fallback safety timeout
+        isComplete = true;
+        clearInterval(interval);
+        updatePreloaderUI(100);
+        preloader.classList.add('is-loaded');
+        setTimeout(() => {
+          preloader.style.display = 'none';
+        }, 650);
+      }
+    }, 25);
   }
 
   // --- 1. Canvas Resizer (Retina High-DPI) ---
@@ -116,6 +197,11 @@
     img.onload = () => {
       framesCache[index] = img;
       requestedSet.delete(index);
+
+      if (window.notifyPreloaderProgress && index <= 5) {
+        const loadedCount = [0, 1, 2, 3, 4].filter(i => framesCache[i] && framesCache[i].complete).length;
+        window.notifyPreloaderProgress(25 + loadedCount * 15);
+      }
 
       // If near current scroll position, immediately redraw
       if (Math.abs(Math.round(currentFrame) - index) <= 1) {
@@ -935,6 +1021,7 @@
 
   // --- 12. Initialization ---
   function init() {
+    initPreloader();
     window.addEventListener('resize', resizeCanvas, { passive: true });
     window.addEventListener('scroll', updateScroll, { passive: true });
     window.addEventListener('hashchange', handleHashNavigation, { passive: true });
